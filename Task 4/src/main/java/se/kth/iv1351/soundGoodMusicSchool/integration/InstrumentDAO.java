@@ -23,6 +23,10 @@ public class InstrumentDAO {
     private PreparedStatement terminateRental;
     private PreparedStatement updateRentalInstrument;
     private PreparedStatement getInstrumentId;
+    private PreparedStatement getNumberOfRentals;
+    private PreparedStatement validateStudentId;
+    private PreparedStatement validateInstrumentId;
+    private PreparedStatement getStudentRentalCount;
 
     public InstrumentDAO() throws InstrumentDBException {
         try {
@@ -46,19 +50,25 @@ public class InstrumentDAO {
     private void prepareStatement() throws SQLException {
         listInstruments = connection.prepareStatement("SELECT * FROM instruments WHERE type = ? AND is_available = true");
         rentInstrument = connection.prepareStatement("UPDATE instruments SET is_available = false WHERE instrument_id = ?");
-        updateInstrument = connection.prepareStatement("INSERT INTO renting_instrument (time_rented, student_id, is_terminated, instrument_id) VALUES (?, ?, ?, ?)");
+        updateInstrument = connection.prepareStatement("INSERT INTO renting_instruments (rental_id, time_rented, student_id, is_terminated, instrument_id) VALUES (?, ?, ?, ?, ?)");
         terminateRental = connection.prepareStatement("UPDATE instruments SET is_available = true WHERE instrument_id = ?");
-        updateRentalInstrument = connection.prepareStatement("UPDATE renting_instrument SET is_terminated = False WHERE rental_id = ?");
-        getInstrumentId = connection.prepareStatement("SELECT instrument_id FROM renting_instrument WHERE rental_id = ?");
+        updateRentalInstrument = connection.prepareStatement("UPDATE renting_instruments SET is_terminated = False WHERE rental_id = ?");
+        getInstrumentId = connection.prepareStatement("SELECT instrument_id FROM renting_instruments WHERE rental_id = ?");
+
+        getNumberOfRentals = connection.prepareStatement("SELECT COUNT(*) FROM renting_instruments");
+        validateStudentId = connection.prepareStatement("SELECT student_id FROM student WHERE student_id = ?");
+        validateInstrumentId = connection.prepareStatement("SELECT instrument_id FROM instruments WHERE instrument_id = ?");
+        getStudentRentalCount = connection.prepareStatement("SELECT COUNT(*) FROM renting_instruments WHERE student_id = ? AND is_terminated = false");
     }
 
     public void rentInstrument(int instrumentId, int studentId) throws InstrumentDBException {
         String errorMessage = "Could not rent instrument for: " + studentId;
 
         try {
-            if (instrumentId < 0 || studentId < 0) {
+            if (!validInstrumentId(instrumentId) || !validStudentId(studentId) || !validStudentRentalCount(studentId)) {
                 throw new InstrumentDBException(errorMessage);
             }
+
             rentInstrument.setInt(1, instrumentId);
             int updatedRows = rentInstrument.executeUpdate();
 
@@ -66,10 +76,11 @@ public class InstrumentDAO {
                 handleException(errorMessage, null);
             }
 
-            updateInstrument.setTimestamp(1, Timestamp.valueOf(LocalDateTime.now()));
-            updateInstrument.setInt(2, studentId);
-            updateInstrument.setBoolean(3, false);
-            updateInstrument.setInt(4, instrumentId);
+            updateInstrument.setInt(1, rental_id());
+            updateInstrument.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
+            updateInstrument.setInt(3, studentId);
+            updateInstrument.setBoolean(4, false);
+            updateInstrument.setInt(5, instrumentId);
             updatedRows = updateInstrument.executeUpdate();
 
             if (updatedRows != 1) {
@@ -85,29 +96,29 @@ public class InstrumentDAO {
 
     public void terminateRental(int rentalId) throws InstrumentDBException {
         String errorMessage = "Could not terminate rental for: " + rentalId;
-
+        
         try {
             updateRentalInstrument.setInt(1, rentalId);
             int updatedRows = updateRentalInstrument.executeUpdate();
-
+            
             if (updatedRows != 1) {
                 handleException(errorMessage, null);
             }
-
+            
             getInstrumentId.setInt(1, rentalId);
             ResultSet result = getInstrumentId.executeQuery();
             result.next();
             int instrumentId = result.getInt("instrument_id");
-
+            
             terminateRental.setInt(1, instrumentId);
             updatedRows = terminateRental.executeUpdate();
-
+            
             if (updatedRows != 1) {
                 handleException(errorMessage, null);
             }
-
+            
             connection.commit();
-
+            
         } catch (SQLException e) {
             handleException(errorMessage, e);
         }
@@ -133,6 +144,49 @@ public class InstrumentDAO {
             handleException(errorMessage, e);
         }
         return instruments;
+    }
+    
+    private int rental_id() throws SQLException {
+        ResultSet result = getNumberOfRentals.executeQuery();
+        result.next();
+        int id = result.getInt(1) + 1;
+        return id;
+    }
+
+    private boolean validStudentId(int studentId) throws SQLException {
+        validateStudentId.setInt(1, studentId);
+        ResultSet result = validateStudentId.executeQuery();
+        if (result.next()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    private boolean validInstrumentId(int instrumentId) throws SQLException {
+        validateInstrumentId.setInt(1, instrumentId);
+        ResultSet result = validateInstrumentId.executeQuery();
+        if (result.next()) {
+            return true;
+        } else {
+            return false;
+        }      
+    }
+
+    private boolean validStudentRentalCount(int studentId) throws SQLException {
+        getStudentRentalCount.setInt(1, studentId);
+        ResultSet result = getStudentRentalCount.executeQuery();
+
+        if (result.next()) {
+            int count = result.getInt(1);
+            if (count < 3) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }      
     }
 
     public void handleException(String errorMessage, Exception e) throws InstrumentDBException {
