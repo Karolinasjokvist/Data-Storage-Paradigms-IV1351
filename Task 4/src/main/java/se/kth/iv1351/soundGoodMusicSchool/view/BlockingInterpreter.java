@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import main.java.se.kth.iv1351.soundGoodMusicSchool.controller.Controller;
+import main.java.se.kth.iv1351.soundGoodMusicSchool.model.InstrumentDTO;
 
 public class BlockingInterpreter {
     private static final String PROMPT = "> ";
@@ -33,19 +34,26 @@ public class BlockingInterpreter {
                             System.out.println(command.toString().toLowerCase());
                         }
                         break;
+
                     case QUIT:
                         System.out.println("Quitting...");
                         keepReceivingCmds = false;
                         break;
+
                     case RENT:
                         controller.rentInstrument(Integer.parseInt(cmdLine.getParameter(0)), Integer.parseInt(cmdLine.getParameter(1)));
                         break;
+
                     case TERMINATE:
                         controller.terminateRental(Integer.parseInt(cmdLine.getParameter(0)));
                         break;
+
                     case LIST:
-                        controller.listInstrument(cmdLine.getParameter(0));
+                        List <? extends InstrumentDTO> instruments = null;
+                        instruments = controller.listInstrument(cmdLine.getParameter(0));
+                        System.out.println(instruments);
                         break;
+
                     default:
                         System.out.println("illegal command");
                 }

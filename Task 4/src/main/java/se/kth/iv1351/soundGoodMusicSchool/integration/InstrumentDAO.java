@@ -37,17 +37,17 @@ public class InstrumentDAO {
         try {
             Class.forName("org.postgresql.Driver");
             this.connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/SoundGoodMusicSchool", "postgres", Login.PASSWORD);
-
+            connection.setAutoCommit(false);
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
     }
 
     private void prepareStatement() throws SQLException {
-        listInstruments = connection.prepareStatement("SELECT * FROM instrument WHERE type = ? AND is_available = true");
-        rentInstrument = connection.prepareStatement("UPDATE instrument SET is_available = false WHERE instrument_id = ?");
+        listInstruments = connection.prepareStatement("SELECT * FROM instruments WHERE type = ? AND is_available = true");
+        rentInstrument = connection.prepareStatement("UPDATE instruments SET is_available = false WHERE instrument_id = ?");
         updateInstrument = connection.prepareStatement("INSERT INTO renting_instrument (time_rented, student_id, is_terminated, instrument_id) VALUES (?, ?, ?, ?)");
-        terminateRental = connection.prepareStatement("UPDATE instrument SET is_available = true WHERE instrument_id = ?");
+        terminateRental = connection.prepareStatement("UPDATE instruments SET is_available = true WHERE instrument_id = ?");
         updateRentalInstrument = connection.prepareStatement("UPDATE renting_instrument SET is_terminated = False WHERE rental_id = ?");
         getInstrumentId = connection.prepareStatement("SELECT instrument_id FROM renting_instrument WHERE rental_id = ?");
     }
@@ -145,9 +145,9 @@ public class InstrumentDAO {
         }
 
         if (e != null) {
-            throw new InstrumentDBException(errorMessage, e);
+            throw new InstrumentDBException(completeErrorMessage, e);
         } else {
-            throw new InstrumentDBException(errorMessage);
+            throw new InstrumentDBException(completeErrorMessage);
         }
     }
 }

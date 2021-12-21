@@ -1,7 +1,5 @@
 package main.java.se.kth.iv1351.soundGoodMusicSchool.model;
 
-import java.time.LocalDateTime;
-
 public interface InstrumentDTO {
     public String getType();
 

@@ -39,9 +39,9 @@ public class Controller {
         }
     }
 
-    public List<Instrument> listInstrument(String instrumentType) throws InstrumentException {
+    public List<? extends InstrumentDTO> listInstrument(String instrumentType) throws InstrumentException {
         try {
-            return instrumentDb.listInstrument(instrumentType);
+            return (List<? extends InstrumentDTO>) instrumentDb.listInstrument(instrumentType);
         } catch (Exception e) {
             throw new InstrumentException("Could not list instruments", e);
         }
