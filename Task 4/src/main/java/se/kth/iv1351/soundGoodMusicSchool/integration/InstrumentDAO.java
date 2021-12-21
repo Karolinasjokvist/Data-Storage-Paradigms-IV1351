@@ -9,12 +9,11 @@ import main.java.se.kth.iv1351.soundGoodMusicSchool.integration.Login;
 public class InstrumentDAO {
     private void accessDB() {
         try {
-            // Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/SoundGoodMusicSchool", "root", Login.PASSWORD);
+            Class.forName("org.postgresql.Driver");
+            Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/SoundGoodMusicSchool", "postgres", Login.PASSWORD);
             System.out.println("Connection successful");
-            
-            con.close();
-        } catch (SQLException e) {
+
+        } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
     }
