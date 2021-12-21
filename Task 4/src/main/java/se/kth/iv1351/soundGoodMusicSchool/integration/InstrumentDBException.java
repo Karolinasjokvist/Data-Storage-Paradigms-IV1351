@@ -1,5 +1,11 @@
 package main.java.se.kth.iv1351.soundGoodMusicSchool.integration;
 
-public class InstrumentDBException {
-    
+public class InstrumentDBException extends Exception {
+    public InstrumentDBException(String message) {
+        super(message);
+    }
+
+    public InstrumentDBException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

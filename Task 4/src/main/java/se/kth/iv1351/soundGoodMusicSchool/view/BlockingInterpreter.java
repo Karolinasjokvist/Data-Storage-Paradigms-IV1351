@@ -8,11 +8,11 @@ import main.java.se.kth.iv1351.soundGoodMusicSchool.controller.Controller;
 public class BlockingInterpreter {
     private static final String PROMPT = "> ";
     private final Scanner console = new Scanner(System.in);
-    private Controller ctrl;
+    private Controller controller;
     private boolean keepReceivingCmds = false;
 
-    public BlockingInterpreter(Controller ctrl) {
-        this.ctrl = ctrl;
+    public BlockingInterpreter(Controller controller) {
+        this.controller = controller;
     }
 
     public void stop() {
@@ -38,13 +38,13 @@ public class BlockingInterpreter {
                         keepReceivingCmds = false;
                         break;
                     case RENT:
-
+                        controller.rentInstrument(cmdLine.getParameter(0), Integer.parseInt(cmdLine.getParameter(1)));
                         break;
                     case TERMINATE:
-                        
+                        controller.terminateRental(Integer.parseInt(cmdLine.getParameter(0)));
                         break;
                     case LIST:
-                        
+                        controller.listInstrument();
                         break;
                     default:
                         System.out.println("illegal command");
