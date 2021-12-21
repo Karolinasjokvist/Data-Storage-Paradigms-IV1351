@@ -38,13 +38,13 @@ public class BlockingInterpreter {
                         keepReceivingCmds = false;
                         break;
                     case RENT:
-                        controller.rentInstrument(cmdLine.getParameter(0), Integer.parseInt(cmdLine.getParameter(1)));
+                        controller.rentInstrument(Integer.parseInt(cmdLine.getParameter(0)), Integer.parseInt(cmdLine.getParameter(1)));
                         break;
                     case TERMINATE:
                         controller.terminateRental(Integer.parseInt(cmdLine.getParameter(0)));
                         break;
                     case LIST:
-                        controller.listInstrument();
+                        controller.listInstrument(cmdLine.getParameter(0));
                         break;
                     default:
                         System.out.println("illegal command");

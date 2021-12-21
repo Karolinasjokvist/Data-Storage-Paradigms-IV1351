@@ -13,36 +13,35 @@ public class Controller {
         instrumentDb = new InstrumentDAO();
     }
 
-    public void rentInstrument(String instrumentType, int studentID) throws InstrumentException {
-        String errorMessage = "Could not rent instrument for: " + studentID;
+    public void rentInstrument(int instrumentId, int studentId) throws InstrumentException {
+        String errorMessage = "Could not rent instrument for: " + studentId;
 
-        if (instrumentType == null || studentID < 0) {
+        if (instrumentId < 0 || studentId < 0) {
             throw new InstrumentException(errorMessage);
         }
         try {
-            instrumentDb.rentInstrument(instrumentType, studentID);
+            instrumentDb.rentInstrument(instrumentId, studentId);
         } catch (Exception e) {
             throw new InstrumentException(errorMessage, e);
         }
     }
 
-    public void terminateRental(int instrumentId) throws InstrumentException {
-        String errorMessage = "Could not terminate rental for: " + instrumentId;
+    public void terminateRental(int rentalId) throws InstrumentException {
+        String errorMessage = "Could not terminate rental for: " + rentalId;
 
-        if (instrumentId < 0) {
+        if (rentalId < 0) {
             throw new InstrumentException(errorMessage);
         }
         try {
-            instrumentDb.terminateRental(instrumentId);
+            instrumentDb.terminateRental(rentalId);
         } catch (Exception e) {
             throw new InstrumentException(errorMessage, e);
         }
     }
 
-    public List<? extends InstrumentDTO> listInstrument() throws InstrumentException {
-
+    public List<Instrument> listInstrument(String instrumentType) throws InstrumentException {
         try {
-            return instrumentDb.listInstrument();
+            return instrumentDb.listInstrument(instrumentType);
         } catch (Exception e) {
             throw new InstrumentException("Could not list instruments", e);
         }

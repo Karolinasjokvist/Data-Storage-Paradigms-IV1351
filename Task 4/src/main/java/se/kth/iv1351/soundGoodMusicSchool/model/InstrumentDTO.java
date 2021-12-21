@@ -9,9 +9,7 @@ public interface InstrumentDTO {
 
     public int getPrice();
 
-    public String getStudentId();
-
-    public LocalDateTime getTimeRented();
-
     public int getInstrumentId();
+
+    public Boolean getIsAvailable();
 }
