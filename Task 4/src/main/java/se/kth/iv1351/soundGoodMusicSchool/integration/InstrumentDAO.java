@@ -10,10 +10,7 @@ import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
-import main.java.se.kth.iv1351.soundGoodMusicSchool.integration.Login;
-import main.java.se.kth.iv1351.soundGoodMusicSchool.model.InstrumentDTO;
 import main.java.se.kth.iv1351.soundGoodMusicSchool.model.Instrument;
-import main.java.se.kth.iv1351.soundGoodMusicSchool.integration.InstrumentDBException;
 
 public class InstrumentDAO {
     private Connection connection;

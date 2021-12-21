@@ -1,6 +1,5 @@
 package main.java.se.kth.iv1351.soundGoodMusicSchool.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import main.java.se.kth.iv1351.soundGoodMusicSchool.model.*;
