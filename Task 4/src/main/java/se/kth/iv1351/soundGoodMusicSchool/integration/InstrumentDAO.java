@@ -27,6 +27,7 @@ public class InstrumentDAO {
     private PreparedStatement validateStudentId;
     private PreparedStatement validateInstrumentId;
     private PreparedStatement getStudentRentalCount;
+    private PreparedStatement validateRentalId;
 
     public InstrumentDAO() throws InstrumentDBException {
         try {
@@ -52,13 +53,14 @@ public class InstrumentDAO {
         rentInstrument = connection.prepareStatement("UPDATE instruments SET is_available = false WHERE instrument_id = ?");
         updateInstrument = connection.prepareStatement("INSERT INTO renting_instruments (rental_id, time_rented, student_id, is_terminated, instrument_id) VALUES (?, ?, ?, ?, ?)");
         terminateRental = connection.prepareStatement("UPDATE instruments SET is_available = true WHERE instrument_id = ?");
-        updateRentalInstrument = connection.prepareStatement("UPDATE renting_instruments SET is_terminated = False WHERE rental_id = ?");
+        updateRentalInstrument = connection.prepareStatement("UPDATE renting_instruments SET is_terminated = true WHERE rental_id = ?");
         getInstrumentId = connection.prepareStatement("SELECT instrument_id FROM renting_instruments WHERE rental_id = ?");
 
         getNumberOfRentals = connection.prepareStatement("SELECT COUNT(*) FROM renting_instruments");
         validateStudentId = connection.prepareStatement("SELECT student_id FROM student WHERE student_id = ?");
         validateInstrumentId = connection.prepareStatement("SELECT instrument_id FROM instruments WHERE instrument_id = ?");
         getStudentRentalCount = connection.prepareStatement("SELECT COUNT(*) FROM renting_instruments WHERE student_id = ? AND is_terminated = false");
+        validateRentalId = connection.prepareStatement("SELECT rental_id FROM renting_instruments WHERE rental_id = ?");
     }
 
     public void rentInstrument(int instrumentId, int studentId) throws InstrumentDBException {
@@ -98,6 +100,10 @@ public class InstrumentDAO {
         String errorMessage = "Could not terminate rental for: " + rentalId;
         
         try {
+            if (!validRentalId(rentalId)) {
+                throw new InstrumentDBException(errorMessage);
+            }
+
             updateRentalInstrument.setInt(1, rentalId);
             int updatedRows = updateRentalInstrument.executeUpdate();
             
@@ -189,6 +195,16 @@ public class InstrumentDAO {
         }      
     }
 
+    private boolean validRentalId(int rentalId) throws SQLException {
+        validateRentalId.setInt(1, rentalId);
+        ResultSet result = validateRentalId.executeQuery();
+        if (result.next()) {
+            return true;
+        } else {
+            return false;
+        }      
+    }
+
     public void handleException(String errorMessage, Exception e) throws InstrumentDBException {
         String completeErrorMessage = errorMessage;
 
@@ -204,4 +220,6 @@ public class InstrumentDAO {
             throw new InstrumentDBException(completeErrorMessage);
         }
     }
+
+
 }
