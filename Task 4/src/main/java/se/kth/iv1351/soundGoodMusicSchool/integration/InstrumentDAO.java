@@ -13,6 +13,23 @@ import java.time.LocalDateTime;
 import main.java.se.kth.iv1351.soundGoodMusicSchool.model.Instrument;
 
 public class InstrumentDAO {
+    private static final String INSTRUMENT_TABLE_NAME = "Instruments";
+    private static final String INSTRUMENT_PK_COLUMN_NAME = "instrument_id";
+    private static final String INSTRUMENT_AVAILABLE_COLUMN_NAME = "is_available";
+    private static final String INSTRUMENT_TYPE_COLUMN_NAME = "type";
+    private static final String INSTRUMENT_BRAND_COLUMN_NAME = "brand";
+    private static final String INSTRUMENT_PRICE_COLUMN_NAME = "price";
+
+    private static final String RENT_INSTRUMENT_TABLE_NAME = "renting_instruments";
+    private static final String RENT_INSTRUMENT_PK_COLUMN_NAME = "rental_id";
+    private static final String RENT_INSTRUMENT_START_COLUMN_NAME = "time_rented";
+    private static final String RENT_INSTRUMENT_FK_STUDENT_COLUMN_NAME = "student_id";
+    private static final String RENT_INSTRUMENT_FK_INSTRUMENT_COLUMN_NAME = "instrument_id";
+    private static final String RENT_INSTRUMENT_TERMINATED_COLUMN_NAME = "is_terminated";
+
+    private static final String STUDENT_TABLE_NAME = "student";
+    private static final String STUDENT_PK_COLUMN_NAME = "student_id";
+
     private Connection connection;
     private PreparedStatement listInstruments;
     private PreparedStatement rentInstrument;
@@ -46,18 +63,18 @@ public class InstrumentDAO {
     }
 
     private void prepareStatement() throws SQLException {
-        listInstruments = connection.prepareStatement("SELECT * FROM instruments WHERE type = ? AND is_available = true");
-        rentInstrument = connection.prepareStatement("UPDATE instruments SET is_available = false WHERE instrument_id = ?");
-        updateInstrument = connection.prepareStatement("INSERT INTO renting_instruments (rental_id, time_rented, student_id, is_terminated, instrument_id) VALUES (?, ?, ?, ?, ?)");
-        terminateRental = connection.prepareStatement("UPDATE instruments SET is_available = true WHERE instrument_id = ?");
-        updateRentalInstrument = connection.prepareStatement("UPDATE renting_instruments SET is_terminated = true WHERE rental_id = ?");
-        getInstrumentId = connection.prepareStatement("SELECT instrument_id FROM renting_instruments WHERE rental_id = ?");
+        listInstruments = connection.prepareStatement("SELECT * FROM " + INSTRUMENT_TABLE_NAME + " WHERE " + INSTRUMENT_TYPE_COLUMN_NAME + " = ? AND " + INSTRUMENT_AVAILABLE_COLUMN_NAME + " = true");
+        rentInstrument = connection.prepareStatement("UPDATE " + INSTRUMENT_TABLE_NAME + " SET " + INSTRUMENT_AVAILABLE_COLUMN_NAME + " = false WHERE " + INSTRUMENT_PK_COLUMN_NAME + " = ?");
+        updateInstrument = connection.prepareStatement("INSERT INTO " + RENT_INSTRUMENT_TABLE_NAME + " (" + RENT_INSTRUMENT_PK_COLUMN_NAME + ", " + RENT_INSTRUMENT_START_COLUMN_NAME + ", " + RENT_INSTRUMENT_FK_STUDENT_COLUMN_NAME + ", " + RENT_INSTRUMENT_TERMINATED_COLUMN_NAME + ", " + RENT_INSTRUMENT_FK_INSTRUMENT_COLUMN_NAME + ") VALUES (?, ?, ?, ?, ?)");
+        terminateRental = connection.prepareStatement("UPDATE "+ INSTRUMENT_TABLE_NAME +" SET " + INSTRUMENT_AVAILABLE_COLUMN_NAME + " = true WHERE " + INSTRUMENT_PK_COLUMN_NAME + " = ?");
+        updateRentalInstrument = connection.prepareStatement("UPDATE " + RENT_INSTRUMENT_TABLE_NAME + " SET " + RENT_INSTRUMENT_TERMINATED_COLUMN_NAME + " = true WHERE " + RENT_INSTRUMENT_PK_COLUMN_NAME + " = ?");
+        getInstrumentId = connection.prepareStatement("SELECT " + INSTRUMENT_PK_COLUMN_NAME + " FROM " + RENT_INSTRUMENT_TABLE_NAME + " WHERE " + RENT_INSTRUMENT_PK_COLUMN_NAME + " = ?");
 
-        getNumberOfRentals = connection.prepareStatement("SELECT COUNT(*) FROM renting_instruments");
-        validateStudentId = connection.prepareStatement("SELECT student_id FROM student WHERE student_id = ?");
-        validateInstrumentId = connection.prepareStatement("SELECT instrument_id FROM instruments WHERE instrument_id = ?");
-        getStudentRentalCount = connection.prepareStatement("SELECT COUNT(*) FROM renting_instruments WHERE student_id = ? AND is_terminated = false");
-        validateRentalId = connection.prepareStatement("SELECT rental_id FROM renting_instruments WHERE rental_id = ?");
+        getNumberOfRentals = connection.prepareStatement("SELECT COUNT(*) FROM " + RENT_INSTRUMENT_TABLE_NAME);
+        validateStudentId = connection.prepareStatement("SELECT " + STUDENT_PK_COLUMN_NAME + " FROM " + STUDENT_TABLE_NAME + " WHERE " + STUDENT_PK_COLUMN_NAME + " = ?");
+        validateInstrumentId = connection.prepareStatement("SELECT " + INSTRUMENT_PK_COLUMN_NAME + " FROM " + INSTRUMENT_TABLE_NAME + " WHERE " + INSTRUMENT_PK_COLUMN_NAME + " = ?");
+        getStudentRentalCount = connection.prepareStatement("SELECT COUNT(*) FROM " + RENT_INSTRUMENT_TABLE_NAME + " WHERE " + RENT_INSTRUMENT_FK_STUDENT_COLUMN_NAME + " = ? AND " + RENT_INSTRUMENT_TERMINATED_COLUMN_NAME + " = false");
+        validateRentalId = connection.prepareStatement("SELECT " + RENT_INSTRUMENT_PK_COLUMN_NAME + " FROM " + RENT_INSTRUMENT_TABLE_NAME + " WHERE " + RENT_INSTRUMENT_PK_COLUMN_NAME + " = ?");
     }
 
     public void rentInstrument(int instrumentId, int studentId) throws InstrumentDBException {
@@ -136,11 +153,11 @@ public class InstrumentDAO {
             ResultSet result = listInstruments.executeQuery();
             
             while (result.next()) {
-                instruments.add(new Instrument(result.getInt("instrument_id"),
-                                                result.getString("type"),
-                                                result.getString("brand"),
-                                                result.getInt("price"),
-                                                result.getBoolean("is_available")));
+                instruments.add(new Instrument(result.getInt(INSTRUMENT_PK_COLUMN_NAME),
+                                                result.getString(INSTRUMENT_TYPE_COLUMN_NAME),
+                                                result.getString(INSTRUMENT_BRAND_COLUMN_NAME),
+                                                result.getInt(INSTRUMENT_PRICE_COLUMN_NAME),
+                                                result.getBoolean(INSTRUMENT_AVAILABLE_COLUMN_NAME)));
             }
             connection.commit();
         } catch (SQLException e) {
@@ -217,6 +234,4 @@ public class InstrumentDAO {
             throw new InstrumentDBException(completeErrorMessage);
         }
     }
-
-
 }
