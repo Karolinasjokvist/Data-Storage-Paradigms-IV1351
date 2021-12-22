@@ -82,7 +82,7 @@ public class InstrumentDAO {
 
         try {
             if (!validInstrumentId(instrumentId) || !validStudentId(studentId) || !validStudentRentalCount(studentId)) {
-                throw new InstrumentDBException(errorMessage);
+                handleException(errorMessage, null);
             }
 
             rentInstrument.setInt(1, instrumentId);
@@ -115,7 +115,7 @@ public class InstrumentDAO {
         
         try {
             if (!validRentalId(rentalId)) {
-                throw new InstrumentDBException(errorMessage);
+                handleException(errorMessage, null);
             }
 
             updateRentalInstrument.setInt(1, rentalId);
