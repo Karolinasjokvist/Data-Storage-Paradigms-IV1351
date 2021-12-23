@@ -1,3 +1,16 @@
+/*
+INSERT into lesson (lesson_id, instructor_id, room_id, price_type_id, time, genre, amount_students, min_students, max_students, instrument_type, lesson_type, skill_level)
+VALUES (1, (SELECT instructor_id FROM instructor ORDER BY RANDOM() LIMIT 1), (SELECT room_id FROM classrooms ORDER BY RANDOM() LIMIT 1), (SELECT price_type_id FROM price_scheme WHERE type='Advanced individual'), '2021/10/05 12:50:00', null, null, null, null, 'saxophone', 'individual', 'Advanced');
+
+insert into lesson (lesson_id, instructor_id, room_id, price_type_id, time, genre, amount_students, min_students, max_students, instrument_type, lesson_type, skill_level)
+values (11, (SELECT instructor_id FROM instructor WHERE teach_ensembles='true' ORDER BY RANDOM() LIMIT 1), (SELECT room_id FROM classrooms ORDER BY RANDOM() LIMIT 1), (SELECT price_type_id FROM price_scheme WHERE type='ensamble'), '2021/05/18 10:10:00', 'gospel band', null, 3, 20, null, 'ensemble', null);
+
+insert into lesson (lesson_id, instructor_id, room_id, price_type_id, time, genre, amount_students, min_students, max_students, instrument_type, lesson_type, skill_level)
+values (23, (SELECT instructor_id FROM instructor ORDER BY RANDOM() LIMIT 1), (SELECT room_id FROM classrooms ORDER BY RANDOM() LIMIT 1), (SELECT price_type_id FROM price_scheme WHERE type='Intermediate group'), '2020/11/19 12:00:00', null, null, 3, 10, 'guitar', 'group', 'Intermediate');
+
+UPDATE lesson SET amount_students = (SELECT count(CASE WHEN lesson_id='11' THEN 1 ELSE NULL END) FROM student_lesson) WHERE lesson_id='11';
+*/
+
 --  student
 insert into student (student_id, person_number, name, address, age, zip, city) values (1, '4399266252', 'Diannne', '4630 Miller Court', 62, '76202', 'København');
 insert into student (student_id, person_number, name, address, age, zip, city) values (2, '9629438806', 'Erwin', '3 Forest Run Lane', 48, '69613', 'Toubao');
@@ -60,20 +73,6 @@ insert into price_scheme (price_type_id, lesson_type_price, skill_level_price, d
 
 
 --  lesson
-/*
-INSERT into lesson (lesson_id, instructor_id, room_id, price_type_id, time, genre, amount_students, min_students, max_students, instrument_type, lesson_type, skill_level)
-VALUES (1, (SELECT instructor_id FROM instructor ORDER BY RANDOM() LIMIT 1), (SELECT room_id FROM classrooms ORDER BY RANDOM() LIMIT 1), (SELECT price_type_id FROM price_scheme WHERE type='Advanced individual'), '2021/10/05 12:50:00', null, null, null, null, 'saxophone', 'individual', 'Advanced');
-
-insert into lesson (lesson_id, instructor_id, room_id, price_type_id, time, genre, amount_students, min_students, max_students, instrument_type, lesson_type, skill_level)
-values (11, (SELECT instructor_id FROM instructor WHERE teach_ensembles='true' ORDER BY RANDOM() LIMIT 1), (SELECT room_id FROM classrooms ORDER BY RANDOM() LIMIT 1), (SELECT price_type_id FROM price_scheme WHERE type='ensamble'), '2021/05/18 10:10:00', 'gospel band', null, 3, 20, null, 'ensemble', null);
-
-insert into lesson (lesson_id, instructor_id, room_id, price_type_id, time, genre, amount_students, min_students, max_students, instrument_type, lesson_type, skill_level)
-values (23, (SELECT instructor_id FROM instructor ORDER BY RANDOM() LIMIT 1), (SELECT room_id FROM classrooms ORDER BY RANDOM() LIMIT 1), (SELECT price_type_id FROM price_scheme WHERE type='Intermediate group'), '2020/11/19 12:00:00', null, null, 3, 10, 'guitar', 'group', 'Intermediate');
-
-UPDATE lesson SET amount_students = (SELECT count(CASE WHEN lesson_id='11' THEN 1 ELSE NULL END) FROM student_lesson) WHERE lesson_id='11';
-*/
-
-
 insert into lesson (lesson_id, instructor_id, room_id, price_type_id, time, genre, amount_students, min_students, max_students, instrument_type, lesson_type, skill_level) values (1, 2, 3, 3, '2021/10/05 12:50:00', null, null, null, null, 'saxophone', 'individual', 'Advanced');
 insert into lesson (lesson_id, instructor_id, room_id, price_type_id, time, genre, amount_students, min_students, max_students, instrument_type, lesson_type, skill_level) values (2, 1, 4, 3, '2020/10/18 11:40:00', null, null, null, null, 'Piano', 'individual', 'Advanced');
 insert into lesson (lesson_id, instructor_id, room_id, price_type_id, time, genre, amount_students, min_students, max_students, instrument_type, lesson_type, skill_level) values (3, 3, 3, 2, '2021/12/05 09:50:00', null, null, null, null, 'clarinet', 'individual', 'Intermediate');
