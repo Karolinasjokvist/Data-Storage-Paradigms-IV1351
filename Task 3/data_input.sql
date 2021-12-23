@@ -112,6 +112,10 @@ insert into lesson (lesson_id, instructor_id, room_id, price_type_id, time, genr
 insert into lesson (lesson_id, instructor_id, room_id, price_type_id, time, genre, amount_students, min_students, max_students, instrument_type, lesson_type, skill_level) values (34, 2, 1, 6, '2021/03/01 13:50:00', null, 4, 3, 10, 'cello', 'group', 'Advanced');
 insert into lesson (lesson_id, instructor_id, room_id, price_type_id, time, genre, amount_students, min_students, max_students, instrument_type, lesson_type, skill_level) values (35, 5, 5, 6, '2021/05/19 20:50:00', null, 4, 3, 10, 'Piano', 'group', 'Advanced');
 
+insert into lesson (lesson_id, instructor_id, room_id, price_type_id, time, genre, amount_students, min_students, max_students, instrument_type, lesson_type, skill_level) values (36, 1, 4, 7, '2021/12/27 08:00:00', 'R&B', 4, 3, 20, null, 'ensemble', null);
+insert into lesson (lesson_id, instructor_id, room_id, price_type_id, time, genre, amount_students, min_students, max_students, instrument_type, lesson_type, skill_level) values (37, 2, 4, 7, '2021/12/28 16:15:00', 'Folk Music', 4, 3, 20, null, 'ensemble', null);
+insert into lesson (lesson_id, instructor_id, room_id, price_type_id, time, genre, amount_students, min_students, max_students, instrument_type, lesson_type, skill_level) values (38, 3, 2, 7, '2021/12/29 13:15:00', 'Country', 4, 3, 20, null, 'ensemble', null);
+
 
 --  student_lesson
 insert into student_lesson (student_id, lesson_id) values (1, 1);

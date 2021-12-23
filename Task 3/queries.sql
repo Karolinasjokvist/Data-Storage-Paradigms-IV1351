@@ -3,9 +3,9 @@ SELECT count(CASE WHEN time >= '2021-01-01' AND time < '2021-02-01' THEN 1 ELSE 
 
 CREATE VIEW lesson_count_month AS
     SELECT
-    EXTRACT(month FROM time),
-    count(*) FROM lesson WHERE EXTRACT(YEAR FROM time) = '2021' GROUP BY EXTRACT(month FROM time)
-    ORDER BY COUNT(*) DESC;
+	EXTRACT(month FROM time) AS month,
+	count(*) FROM lesson WHERE EXTRACT(YEAR FROM time) = '2021' GROUP BY EXTRACT(month FROM time)
+	ORDER BY EXTRACT(month FROM time) ASC;
 
 
 -- Select all lessons each month in a year grouped by lesson type
@@ -52,8 +52,8 @@ CREATE VIEW Lesson_types_year
 
 
 -- Get the average number of lessons in a year
-CREATE VIEW lesson_average_year AS
-    SELECT count(CASE WHEN time >= '2021-01-01' AND time < '2022-01-01' THEN 1 ELSE NULL END)/12.0 FROM lesson
+CREATE VIEW lesson_average_instructor AS
+    SELECT instructor_id, count(*) FROM lesson WHERE EXTRACT(YEAR FROM time) = '2021' GROUP BY instructor_id HAVING COUNT(*) > 3;
 
 
 -- Select all instructors that have taught more than one lesson
@@ -70,4 +70,4 @@ CREATE MATERIALIZED VIEW lesson_next_week AS
         WHEN amount_students = max_students - 2 THEN '2 seats left'
         ELSE 'More than 2 seats left'
     END as seats_left
-    FROM lesson WHERE date_trunc('week', time) = date_trunc('week', now()) + interval '1 week'
+    FROM lesson WHERE date_trunc('week', time) = date_trunc('week', now()) + interval '1 week' AND lesson_type = 'ensemble' ORDER BY genre, weekday;
