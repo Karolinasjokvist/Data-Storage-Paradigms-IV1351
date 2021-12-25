@@ -31,25 +31,47 @@ CREATE VIEW Lesson_types_year
     data_ensamble AS (
         SELECT
         EXTRACT(month FROM time),
-        count(*) FROM lesson WHERE EXTRACT(YEAR FROM time) = '2021' AND lesson_type='ensemble' GROUP BY EXTRACT(month FROM time)
+        count(*) AS ensamble_count FROM lesson WHERE EXTRACT(YEAR FROM time) = '2021' AND lesson_type='ensemble' GROUP BY EXTRACT(month FROM time)
         ORDER BY EXTRACT(month FROM time)
     ),
     data_individual AS (
         SELECT
         EXTRACT(month FROM time),
-        count(*) FROM lesson WHERE EXTRACT(YEAR FROM time) = '2021' AND lesson_type='individual' GROUP BY EXTRACT(month FROM time)
+        count(*) AS individual_count FROM lesson WHERE EXTRACT(YEAR FROM time) = '2021' AND lesson_type='individual' GROUP BY EXTRACT(month FROM time)
         ORDER BY EXTRACT(month FROM time)
     ),
     data_group AS (
         SELECT
         EXTRACT(month FROM time),
-        count(*) FROM lesson WHERE EXTRACT(YEAR FROM time) = '2021' AND lesson_type='group' GROUP BY EXTRACT(month FROM time)
+        count(*) AS group_count FROM lesson WHERE EXTRACT(YEAR FROM time) = '2021' AND lesson_type='group' GROUP BY EXTRACT(month FROM time)
         ORDER BY EXTRACT(month FROM time)
     )
-    SELECT data_ensamble.month, data_ensamble.count, data_individual.count, data_group.count FROM data_ensamble
-    INNER JOIN data_individual ON data_ensamble.month = data_individual.month
-    INNER JOIN data_group ON data_ensamble.month = data_group.month;
+    SELECT data_ensamble.extract, data_ensamble.ensamble_count, data_individual.individual_count, data_group.group_count FROM data_ensamble
+    INNER JOIN data_individual ON data_ensamble.extract = data_individual.extract
+    INNER JOIN data_group ON data_ensamble.extract = data_group.extract;
 
+
+WITH data_ensamble AS (
+	SELECT
+	EXTRACT(month FROM time),
+	count(*) AS ensamble_count FROM lesson WHERE EXTRACT(YEAR FROM time) = '2021' AND lesson_type='ensemble' GROUP BY EXTRACT(month FROM time)
+	ORDER BY EXTRACT(month FROM time)
+),
+data_individual AS (
+	SELECT
+	EXTRACT(month FROM time),
+	count(*) AS individual_count FROM lesson WHERE EXTRACT(YEAR FROM time) = '2021' AND lesson_type='individual' GROUP BY EXTRACT(month FROM time)
+	ORDER BY EXTRACT(month FROM time)
+),
+data_group AS (
+	SELECT
+	EXTRACT(month FROM time),
+	count(*) AS group_count FROM lesson WHERE EXTRACT(YEAR FROM time) = '2021' AND lesson_type='group' GROUP BY EXTRACT(month FROM time)
+	ORDER BY EXTRACT(month FROM time)
+)
+SELECT data_ensamble.extract, data_ensamble.ensamble_count, data_individual.individual_count, data_group.group_count FROM data_ensamble
+INNER JOIN data_individual ON data_ensamble.extract = data_individual.extract
+INNER JOIN data_group ON data_ensamble.extract = data_group.extract;
 
 -- Get the average number of lessons in a year
 CREATE VIEW lesson_average_instructor AS
