@@ -1,6 +1,4 @@
 -- Select all lessons given each month in a year
-SELECT count(CASE WHEN time >= '2021-01-01' AND time < '2021-02-01' THEN 1 ELSE NULL END) FROM lesson
-
 CREATE VIEW lesson_count_month AS
     SELECT
 	EXTRACT(month FROM time) AS month,
@@ -9,78 +7,25 @@ CREATE VIEW lesson_count_month AS
 
 
 -- Select all lessons each month in a year grouped by lesson type
-SELECT count(CASE WHEN time >= '2019-01-01' AND time < '2023-11-01' AND lesson_type='individual' THEN 1 ELSE NULL END) FROM lesson
+CREATE VIEW lesson_count_type_month AS
+    SELECT lesson_type ,COUNT(*) as amount ,EXTRACT(MONTH FROM time) as month from lesson
+    WHERE EXTRACT(YEAR FROM time) = '2021'
+    GROUP BY date, lesson_type;
 
-SELECT
-EXTRACT(month FROM time),
-count(*) FROM lesson WHERE EXTRACT(YEAR FROM time) = '2021' AND lesson_type='individual' GROUP BY EXTRACT(month FROM time)
-ORDER BY EXTRACT(month FROM time);
-
-SELECT
-EXTRACT(month FROM time),
-count(*) FROM lesson WHERE EXTRACT(YEAR FROM time) = '2021' AND lesson_type='group' GROUP BY EXTRACT(month FROM time)
-ORDER BY EXTRACT(month FROM time);
-
-SELECT
-EXTRACT(month FROM time),
-count(*) FROM lesson WHERE EXTRACT(YEAR FROM time) = '2021' AND lesson_type='ensemble' GROUP BY EXTRACT(month FROM time)
-ORDER BY EXTRACT(month FROM time);
-
-CREATE VIEW Lesson_types_year
-    AS WITH
-    data_ensamble AS (
-        SELECT
-        EXTRACT(month FROM time),
-        count(*) AS ensamble_count FROM lesson WHERE EXTRACT(YEAR FROM time) = '2021' AND lesson_type='ensemble' GROUP BY EXTRACT(month FROM time)
-        ORDER BY EXTRACT(month FROM time)
-    ),
-    data_individual AS (
-        SELECT
-        EXTRACT(month FROM time),
-        count(*) AS individual_count FROM lesson WHERE EXTRACT(YEAR FROM time) = '2021' AND lesson_type='individual' GROUP BY EXTRACT(month FROM time)
-        ORDER BY EXTRACT(month FROM time)
-    ),
-    data_group AS (
-        SELECT
-        EXTRACT(month FROM time),
-        count(*) AS group_count FROM lesson WHERE EXTRACT(YEAR FROM time) = '2021' AND lesson_type='group' GROUP BY EXTRACT(month FROM time)
-        ORDER BY EXTRACT(month FROM time)
-    )
-    SELECT data_ensamble.extract, data_ensamble.ensamble_count, data_individual.individual_count, data_group.group_count FROM data_ensamble
-    INNER JOIN data_individual ON data_ensamble.extract = data_individual.extract
-    INNER JOIN data_group ON data_ensamble.extract = data_group.extract;
-
-
-WITH data_ensamble AS (
-	SELECT
-	EXTRACT(month FROM time),
-	count(*) AS ensamble_count FROM lesson WHERE EXTRACT(YEAR FROM time) = '2021' AND lesson_type='ensemble' GROUP BY EXTRACT(month FROM time)
-	ORDER BY EXTRACT(month FROM time)
-),
-data_individual AS (
-	SELECT
-	EXTRACT(month FROM time),
-	count(*) AS individual_count FROM lesson WHERE EXTRACT(YEAR FROM time) = '2021' AND lesson_type='individual' GROUP BY EXTRACT(month FROM time)
-	ORDER BY EXTRACT(month FROM time)
-),
-data_group AS (
-	SELECT
-	EXTRACT(month FROM time),
-	count(*) AS group_count FROM lesson WHERE EXTRACT(YEAR FROM time) = '2021' AND lesson_type='group' GROUP BY EXTRACT(month FROM time)
-	ORDER BY EXTRACT(month FROM time)
-)
-SELECT data_ensamble.extract, data_ensamble.ensamble_count, data_individual.individual_count, data_group.group_count FROM data_ensamble
-INNER JOIN data_individual ON data_ensamble.extract = data_individual.extract
-INNER JOIN data_group ON data_ensamble.extract = data_group.extract;
 
 -- Get the average number of lessons in a year
-CREATE VIEW lesson_average_instructor AS
-    SELECT instructor_id, count(*) FROM lesson WHERE EXTRACT(YEAR FROM time) = '2021' GROUP BY instructor_id HAVING COUNT(*) > 3;
+CREATE VIEW lesson_average_year AS
+    SELECT count(CASE WHEN EXTRACT(YEAR FROM time) = '2021' THEN 1 ELSE NULL END)/12.0 as average FROM lesson
+
+CREATE VIEW lesson_average_type AS
+    SELECT lesson_type ,COUNT(*)/12.0 as amount from lesson
+    WHERE EXTRACT(YEAR FROM time) = '2021'
+    GROUP BY lesson_type;
 
 
 -- Select all instructors that have taught more than one lesson
-CREATE VIEW instructor_count_lessons AS
-    SELECT instructor_id, count(*) FROM lesson WHERE time >= '2021-01-01' AND time < '2022-01-01' GROUP BY instructor_id HAVING COUNT(*) > 3;
+CREATE VIEW lesson_average_instructor AS
+    SELECT instructor_id, count(*) FROM lesson WHERE EXTRACT(YEAR FROM time) = '2021' GROUP BY instructor_id HAVING COUNT(*) > 3;
 
 
 -- Select all lessons that is in the next week
