@@ -10,7 +10,7 @@ CREATE VIEW lesson_count_month AS
 CREATE VIEW lesson_count_type_month AS
     SELECT lesson_type ,COUNT(*) as amount ,EXTRACT(MONTH FROM time) as month from lesson
     WHERE EXTRACT(YEAR FROM time) = '2021'
-    GROUP BY date, lesson_type;
+    GROUP BY month, lesson_type;
 
 
 -- Get the average number of lessons in a year
