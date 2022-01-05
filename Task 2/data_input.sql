@@ -12,46 +12,47 @@ UPDATE lesson SET amount_students = (SELECT count(CASE WHEN lesson_id='11' THEN 
 */
 
 --  student
-insert into student (student_id, person_number, name, address, age, zip, city) values (1, '4399266252', 'Diannne', '4630 Miller Court', 62, '76202', 'København');
-insert into student (student_id, person_number, name, address, age, zip, city) values (2, '9629438806', 'Erwin', '3 Forest Run Lane', 48, '69613', 'Toubao');
-insert into student (student_id, person_number, name, address, age, zip, city) values (3, '0775049192', 'Corabel', '10 Gulseth Crossing', 48, '50430', 'Mirnyy');
-insert into student (student_id, person_number, name, address, age, zip, city) values (4, '7563794784', 'Audy', '08 Clarendon Hill', 16, '87129', 'Castanheira');
-insert into student (student_id, person_number, name, address, age, zip, city) values (5, '8469283309', 'Margarethe', '814 Gina Plaza', 27, '69603', 'Atimonan');
-insert into student (student_id, person_number, name, address, age, zip, city) values (6, '5896225613', 'Linc', '8 Meadow Valley Lane', 87, '82742', 'Suwon-si');
-insert into student (student_id, person_number, name, address, age, zip, city) values (7, '4013647070', 'Wildon', '3657 Morning Avenue', 86, '66416', 'Ciawi');
-insert into student (student_id, person_number, name, address, age, zip, city) values (8, '6564110907', 'Benetta', '38905 La Follette Alley', 30, '40359', 'Janikowo');
-insert into student (student_id, person_number, name, address, age, zip, city) values (9, '6548789240', 'Danell', '816 Knutson Drive', 78, '86671', 'Dār an Naşr');
-insert into student (student_id, person_number, name, address, age, zip, city) values (10, '4232489977', 'Ashly', '18 Holy Cross Point', 79, '73626', 'Casa Nova');
-insert into student (student_id, person_number, name, address, age, zip, city) values (11, '6424201843', 'Peterus', '80 Artisan Way', 90, '44461', 'Fenyan');
-insert into student (student_id, person_number, name, address, age, zip, city) values (12, '4438495636', 'Ezri', '405 Monica Lane', 100, '03912', 'Kuala Terengganu');
-insert into student (student_id, person_number, name, address, age, zip, city) values (13, '3039561592', 'Jud', '3171 Ramsey Junction', 55, '01905', 'Zaoshi');
-insert into student (student_id, person_number, name, address, age, zip, city) values (14, '4437475714', 'Elsi', '9 Holmberg Place', 39, '02619', 'Shicheng');
-insert into student (student_id, person_number, name, address, age, zip, city) values (15, '1443339459', 'Lorne', '85 Pepper Wood Terrace', 73, '13916', 'Insrom');
-insert into student (student_id, person_number, name, address, age, zip, city) values (16, '8120673505', 'Lorelle', '2422 New Castle Circle', 14, '97655', 'Shanmu');
-insert into student (student_id, person_number, name, address, age, zip, city) values (17, '1446785029', 'Mattheus', '29694 West Crossing', 46, '72166', 'Siaya');
-insert into student (student_id, person_number, name, address, age, zip, city) values (18, '2291730765', 'Shelagh', '60209 Schurz Pass', 36, '22880', 'Las Palmas');
-insert into student (student_id, person_number, name, address, age, zip, city) values (19, '6573117231', 'Matias', '7 Nova Way', 92, '78916', 'Sugihwaras');
-insert into student (student_id, person_number, name, address, age, zip, city) values (20, '2280031248', 'Arlene', '78 Bluejay Hill', 95, '34877', 'Shahkot');
-insert into student (student_id, person_number, name, address, age, zip, city) values (21, '6436046746', 'Dulcia', '0002 Dottie Terrace', 60, '32896', 'Padre Burgos');
-insert into student (student_id, person_number, name, address, age, zip, city) values (22, '2511972389', 'Jori', '82985 Dahle Drive', 25, '62252', 'Setaka');
-insert into student (student_id, person_number, name, address, age, zip, city) values (23, '7135476596', 'Timmy', '804 Bobwhite Park', 29, '34874', 'Shināş');
-insert into student (student_id, person_number, name, address, age, zip, city) values (24, '4844689961', 'Conway', '06 Hintze Circle', 45, '39301', 'Kidričevo');
-insert into student (student_id, person_number, name, address, age, zip, city) values (25, '8653873926', 'Jorey', '03 Morrow Street', 90, '68123', 'Bechyně');
-insert into student (student_id, person_number, name, address, age, zip, city) values (26, '5127637747', 'Birdie', '86 Manitowish Junction', 89, '96572', 'Fuzhiping');
-insert into student (student_id, person_number, name, address, age, zip, city) values (27, '1739327084', 'Idelle', '13489 School Terrace', 48, '53214', 'Marmande');
-insert into student (student_id, person_number, name, address, age, zip, city) values (28, '4708606988', 'Mathilda', '95819 Brown Junction', 90, '77740', 'Caoyan');
-insert into student (student_id, person_number, name, address, age, zip, city) values (29, '3742389021', 'Junina', '9 Loftsgordon Alley', 68, '38456', 'Wu’erbu Baolige');
-insert into student (student_id, person_number, name, address, age, zip, city) values (30, '9501861772', 'Craig', '813 Sauthoff Drive', 37, '91608', 'Melekyne');
+insert into student (student_id, person_number, name, street, age, zip, city) values (1, '4399266252', 'Diannne', '4630 Miller Court', 62, '76202', 'København');
+insert into student (student_id, person_number, name, street, age, zip, city) values (2, '9629438806', 'Erwin', '3 Forest Run Lane', 48, '69613', 'Toubao');
+insert into student (student_id, person_number, name, street, age, zip, city) values (3, '0775049192', 'Corabel', '10 Gulseth Crossing', 48, '50430', 'Mirnyy');
+insert into student (student_id, person_number, name, street, age, zip, city) values (4, '7563794784', 'Audy', '08 Clarendon Hill', 16, '87129', 'Castanheira');
+insert into student (student_id, person_number, name, street, age, zip, city) values (5, '8469283309', 'Margarethe', '814 Gina Plaza', 27, '69603', 'Atimonan');
+insert into student (student_id, person_number, name, street, age, zip, city) values (6, '5896225613', 'Linc', '8 Meadow Valley Lane', 87, '82742', 'Suwon-si');
+insert into student (student_id, person_number, name, street, age, zip, city) values (7, '4013647070', 'Wildon', '3657 Morning Avenue', 86, '66416', 'Ciawi');
+insert into student (student_id, person_number, name, street, age, zip, city) values (8, '6564110907', 'Benetta', '38905 La Follette Alley', 30, '40359', 'Janikowo');
+insert into student (student_id, person_number, name, street, age, zip, city) values (9, '6548789240', 'Danell', '816 Knutson Drive', 78, '86671', 'Dār an Naşr');
+insert into student (student_id, person_number, name, street, age, zip, city) values (10, '4232489977', 'Ashly', '18 Holy Cross Point', 79, '73626', 'Casa Nova');
+insert into student (student_id, person_number, name, street, age, zip, city) values (11, '6424201843', 'Peterus', '80 Artisan Way', 90, '44461', 'Fenyan');
+insert into student (student_id, person_number, name, street, age, zip, city) values (12, '4438495636', 'Ezri', '405 Monica Lane', 100, '03912', 'Kuala Terengganu');
+insert into student (student_id, person_number, name, street, age, zip, city) values (13, '3039561592', 'Jud', '3171 Ramsey Junction', 55, '01905', 'Zaoshi');
+insert into student (student_id, person_number, name, street, age, zip, city) values (14, '4437475714', 'Elsi', '9 Holmberg Place', 39, '02619', 'Shicheng');
+insert into student (student_id, person_number, name, street, age, zip, city) values (15, '1443339459', 'Lorne', '85 Pepper Wood Terrace', 73, '13916', 'Insrom');
+insert into student (student_id, person_number, name, street, age, zip, city) values (16, '8120673505', 'Lorelle', '2422 New Castle Circle', 14, '97655', 'Shanmu');
+insert into student (student_id, person_number, name, street, age, zip, city) values (17, '1446785029', 'Mattheus', '29694 West Crossing', 46, '72166', 'Siaya');
+insert into student (student_id, person_number, name, street, age, zip, city) values (18, '2291730765', 'Shelagh', '60209 Schurz Pass', 36, '22880', 'Las Palmas');
+insert into student (student_id, person_number, name, street, age, zip, city) values (19, '6573117231', 'Matias', '7 Nova Way', 92, '78916', 'Sugihwaras');
+insert into student (student_id, person_number, name, street, age, zip, city) values (20, '2280031248', 'Arlene', '78 Bluejay Hill', 95, '34877', 'Shahkot');
+insert into student (student_id, person_number, name, street, age, zip, city) values (21, '6436046746', 'Dulcia', '0002 Dottie Terrace', 60, '32896', 'Padre Burgos');
+insert into student (student_id, person_number, name, street, age, zip, city) values (22, '2511972389', 'Jori', '82985 Dahle Drive', 25, '62252', 'Setaka');
+insert into student (student_id, person_number, name, street, age, zip, city) values (23, '7135476596', 'Timmy', '804 Bobwhite Park', 29, '34874', 'Shināş');
+insert into student (student_id, person_number, name, street, age, zip, city) values (24, '4844689961', 'Conway', '06 Hintze Circle', 45, '39301', 'Kidričevo');
+insert into student (student_id, person_number, name, street, age, zip, city) values (25, '8653873926', 'Jorey', '03 Morrow Street', 90, '68123', 'Bechyně');
+insert into student (student_id, person_number, name, street, age, zip, city) values (26, '5127637747', 'Birdie', '86 Manitowish Junction', 89, '96572', 'Fuzhiping');
+insert into student (student_id, person_number, name, street, age, zip, city) values (27, '1739327084', 'Idelle', '13489 School Terrace', 48, '53214', 'Marmande');
+insert into student (student_id, person_number, name, street, age, zip, city) values (28, '4708606988', 'Mathilda', '95819 Brown Junction', 90, '77740', 'Caoyan');
+insert into student (student_id, person_number, name, street, age, zip, city) values (29, '3742389021', 'Junina', '9 Loftsgordon Alley', 68, '38456', 'Wu’erbu Baolige');
+insert into student (student_id, person_number, name, street, age, zip, city) values (30, '9501861772', 'Craig', '813 Sauthoff Drive', 37, '91608', 'Melekyne');
+
 
 --  instructor
-insert into instructor (instructor_id, person_number, name, address, age, zip, city, teach_ensembles) values (1, '3272511316', 'Jon', '34623 Bultman Crossing', 44, '54577', 'Khorostkiv', true);
-insert into instructor (instructor_id, person_number, name, address, age, zip, city, teach_ensembles) values (2, '7339988146', 'Romonda', '328 Monument Road', 96, '79272', 'Takaka', true);
-insert into instructor (instructor_id, person_number, name, address, age, zip, city, teach_ensembles) values (3, '2099419218', 'Cord', '38667 Buell Drive', 83, '93697', 'Fredericton', true);
-insert into instructor (instructor_id, person_number, name, address, age, zip, city, teach_ensembles) values (4, '4775741378', 'Catlee', '81072 American Ash Way', 100, '47735', 'Sembungin', false);
-insert into instructor (instructor_id, person_number, name, address, age, zip, city, teach_ensembles) values (5, '7470023682', 'Horacio', '819 Evergreen Court', 46, '60655', 'Bohdalov', false);
-insert into instructor (instructor_id, person_number, name, address, age, zip, city, teach_ensembles) values (6, '9084281540', 'Aili', '14 Alpine Crossing', 45, '43450', 'Sigayevo', false);
-insert into instructor (instructor_id, person_number, name, address, age, zip, city, teach_ensembles) values (7, '3243033539', 'Elvin', '4 Kim Point', 44, '45100', 'Dadu', false);
-insert into instructor (instructor_id, person_number, name, address, age, zip, city, teach_ensembles) values (8, '7377956557', 'Mikol', '8 Stone Corner Street', 54, '38302', 'Roboré', false);
+insert into instructor (instructor_id, person_number, name, age, street, zip, city, teach_ensembles, email, phone_number) values (1, '2613342463', 'Sanford', 97, '75242 Roth Parkway', '54577', 'Paris 17', false, 'srice0@livejournal.com', '517-658-0103');
+insert into instructor (instructor_id, person_number, name, age, street, zip, city, teach_ensembles, email, phone_number) values (2, '6480441362', 'Millard', 43, '5 Raven Plaza', '79272', 'Yancheng', false, 'mdevere1@angelfire.com', '517-912-2093');
+insert into instructor (instructor_id, person_number, name, age, street, zip, city, teach_ensembles, email, phone_number) values (3, '5202966776', 'Tallie', 22, '9465 Pierstorff Alley', '93697', 'Xinzheng', true, 'twestern2@wikia.com', '551-553-1886');
+insert into instructor (instructor_id, person_number, name, age, street, zip, city, teach_ensembles, email, phone_number) values (4, '6556898198', 'Renato', 67, '542 Paget Parkway', '47735', 'Chong’ansi', false, 'rsimcock3@nyu.edu', '148-845-8131');
+insert into instructor (instructor_id, person_number, name, age, street, zip, city, teach_ensembles, email, phone_number) values (5, '1799357481', 'Melisse', 70, '3916 Mcguire Circle', '60655', 'Lysekil', false, 'mbrenston4@businessinsider.com', '454-283-2096');
+insert into instructor (instructor_id, person_number, name, age, street, zip, city, teach_ensembles, email, phone_number) values (6, '3376284180', 'Gaston', 93, '61 Marcy Park', '43450', 'Paripiranga', true, 'gcherrie5@ezinearticles.com', '844-823-3554');
+insert into instructor (instructor_id, person_number, name, age, street, zip, city, teach_ensembles, email, phone_number) values (7, '6901495927', 'Nancey', 22, '42 Mendota Street', '45100', 'Alkmaar', false, 'nwozencroft6@rediff.com', '894-715-3547');
+insert into instructor (instructor_id, person_number, name, age, street, zip, city, teach_ensembles, email, phone_number) values (8, '5178236556', 'Bond', 39, '560 Lindbergh Parkway', '38302', 'Fuqiang', false, 'bholttom7@skype.com', '259-185-9254');
 
 
 --  classrooms
