@@ -15,7 +15,7 @@ https://www.kth.se/student/kurser/kurs/IV1351
 The purpose is to facilitate information handling and business transactions for the Soundgood music school company, by developing a database which handles all the school's data and also an application that can handle some of the transactions.
 
 ### Database Model
-<img src="Project Images\Logical Model Task 2.png" width="1000px">
+<img src="Project Images\Logical Model Task 2.jpg" width="1000px">
 
 ### Intended Learning Outcomes
 #### Task 1, Conceptual Model
