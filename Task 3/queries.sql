@@ -23,9 +23,10 @@ CREATE VIEW lesson_average_type AS
     GROUP BY lesson_type;
 
 
--- Select all instructors that have taught more than one lesson
+-- Select all instructors that have taught more than a specific amount of lesson
 CREATE VIEW lesson_average_instructor AS
-    SELECT instructor_id, count(*) FROM lesson WHERE EXTRACT(YEAR FROM time) = '2021' GROUP BY instructor_id HAVING COUNT(*) > 3;
+    SELECT instructor_id, count(*) FROM lesson WHERE EXTRACT(YEAR FROM time) = '2021' AND EXTRACT(MONTH FROM time) = '3' GROUP BY instructor_id HAVING COUNT(*) > 0
+    ORDER BY count(*) DESC;
 
 
 -- Select all lessons that is in the next week
