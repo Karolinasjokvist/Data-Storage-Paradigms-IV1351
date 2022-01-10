@@ -81,7 +81,8 @@ public class Instrument {
     public String toString() {
         return "Instrument{" +
                 "brand='" + brand + '\'' +
-                ", price=" + price +
+                ", price=" + price + '\'' +
+                ", instrumentID='" + instrumentId + '\'' +
                 '}';
     }
 }

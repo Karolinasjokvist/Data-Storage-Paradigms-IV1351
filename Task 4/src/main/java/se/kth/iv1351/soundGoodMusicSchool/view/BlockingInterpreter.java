@@ -40,14 +40,17 @@ public class BlockingInterpreter {
                         keepReceivingCmds = false;
                         break;
 
+                    // InstrumentID and StudentID
                     case RENT:
                         controller.rentInstrument(Integer.parseInt(cmdLine.getParameter(0)), Integer.parseInt(cmdLine.getParameter(1)));
                         break;
-
+                    
+                    // Rental id is the only parameter
                     case TERMINATE:
                         controller.terminateRental(Integer.parseInt(cmdLine.getParameter(0)));
                         break;
-
+                    
+                    // list instrument using type
                     case LIST:
                         List <? extends InstrumentDTO> instruments = null;
                         instruments = controller.listInstrument(cmdLine.getParameter(0));

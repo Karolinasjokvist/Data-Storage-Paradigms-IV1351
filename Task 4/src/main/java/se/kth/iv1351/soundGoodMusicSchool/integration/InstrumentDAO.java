@@ -40,6 +40,8 @@ public class InstrumentDAO {
     private PreparedStatement getInstrumentId;
     private PreparedStatement getNumberOfRentals;
     private PreparedStatement getStudentRentalCount;
+    private PreparedStatement getInstrumentAvailability;
+    private PreparedStatement getActiveRental;
 
     /**
      * Creates a new instance of the instrumentDAO.
@@ -85,6 +87,8 @@ public class InstrumentDAO {
 
         getNumberOfRentals = connection.prepareStatement("SELECT COUNT(*) FROM " + RENT_INSTRUMENT_TABLE_NAME);
         getStudentRentalCount = connection.prepareStatement("SELECT COUNT(*) FROM " + RENT_INSTRUMENT_TABLE_NAME + " WHERE " + RENT_INSTRUMENT_FK_STUDENT_COLUMN_NAME + " = ? AND " + RENT_INSTRUMENT_TERMINATED_COLUMN_NAME + " = false");
+        getInstrumentAvailability = connection.prepareStatement("SELECT " + INSTRUMENT_AVAILABLE_COLUMN_NAME + " FROM " + INSTRUMENT_TABLE_NAME + " WHERE " + INSTRUMENT_PK_COLUMN_NAME + " = ?");
+        getActiveRental = connection.prepareStatement("SELECT " + RENT_INSTRUMENT_TERMINATED_COLUMN_NAME + " FROM " + RENT_INSTRUMENT_TABLE_NAME + " WHERE " + RENT_INSTRUMENT_PK_COLUMN_NAME + " = ?");
     }
 
     /**
@@ -98,7 +102,7 @@ public class InstrumentDAO {
         String errorMessage = "Could not rent instrument for: " + studentId;
 
         try {
-            if (!validStudentRentalCount(studentId)) {
+            if (!validStudentRentalCount(studentId) || !validInstrumentAvailability(instrumentId)) {
                 handleException(errorMessage, null);
             }
 
@@ -137,6 +141,9 @@ public class InstrumentDAO {
         String errorMessage = "Could not terminate rental for: " + rentalId;
         
         try {
+            if(activeRentalID(rentalId)) {
+                handleException(errorMessage, null);
+            }
 
             updateRentalInstrument.setInt(1, rentalId);
             int updatedRows = updateRentalInstrument.executeUpdate();
@@ -226,6 +233,52 @@ public class InstrumentDAO {
         } else {
             return false;
         }      
+    }
+
+    /**
+     * Checks if an instrument is available.
+     * 
+     * @param instrumentId the id of the instrument to be checked.
+     * @return true if the instrument is available otherwise false.
+     * @throws InstrumentDBException if the database could not be accessed.
+     */
+    private boolean validInstrumentAvailability(int instrumentId) throws SQLException {
+        getInstrumentAvailability.setInt(1, instrumentId);
+        ResultSet result = getInstrumentAvailability.executeQuery();
+
+        if (result.next()) {
+            boolean available = result.getBoolean(1);
+            if (available) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Checks if a rental has already been terminated.
+     * 
+     * @param rentalId the id of the rental to be checked.
+     * @return true if the rental has already been terminated otherwise false.
+     * @throws InstrumentDBException if the database could not be accessed.
+     */
+    private boolean activeRentalID(int rentalId) throws SQLException {
+        getActiveRental.setInt(1, rentalId);
+        ResultSet result = getActiveRental.executeQuery();
+
+        if (result.next()) {
+            boolean active = result.getBoolean(1);
+            if (active) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return true;
+        }
     }
 
     /**
